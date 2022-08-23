@@ -14,7 +14,7 @@ const Cryptocurrencies = ({simplified}) => {
   useEffect(() => {
     const filteredData = cryptosList?.data?.coins.filter((coin) => coin.name.toLowerCase().includes(searchTerm.toLowerCase()));
     setCryptos(filteredData);
-    
+
   }, [cryptosList, searchTerm])
 
   if(isFetching) return 'Loading...';
@@ -22,9 +22,12 @@ const Cryptocurrencies = ({simplified}) => {
 
   return (
     <>
-      <div className="search-crypto">
+      {!simplified && (
+        <div className="search-crypto">
         <Input placeholder="Search Cryptocurrency" onChange={(e) => setSearchTerm(e.target.value)}/>
       </div>
+      )}
+      
       <Row gutter={[32, 32]} className="crypto-card-container">
         {cryptos?.map((currency) => (
           <Col xs={24} sm={12} lg={6} className="crypto-card" key={currency.id}>
