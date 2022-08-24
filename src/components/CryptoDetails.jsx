@@ -5,7 +5,9 @@ import millify from 'millify';
 import { Col, Row, Typography, Select } from 'antd';
 import { MoneyCollectOutlined, DollarCircleOutlined, FundOutlined, ExclamationCircleOutlined, StopOutlined, TrophyOutlined, CheckOutlined, NumberOutlined, ThunderboltOutlined } from '@ant-design/icons';
 
-import { useGetCryptoDetailsQuery } from '../services/cryptoApi';
+import { useGetCryptoDetailsQuery, /*useGetCryptoHistoryQuery*/ } from '../services/cryptoApi';
+
+//import LineChart from './LineChart';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -13,14 +15,14 @@ const { Option } = Select;
 
 const CryptoDetails = () => {
   const { coinId } = useParams();
-  const [timePeriod, setTimePeriod] = useState('7');
-  const {data, isFetching} = useGetCryptoDetailsQuery(coinId);
+  //const [timePeriod, setTimePeriod] = useState('7d');
+  const { data, isFetching } = useGetCryptoDetailsQuery(coinId);
+  //const { data: coinHistory } = useGetCryptoHistoryQuery({ coinId, timePeriod });
   const cryptoDetails = data?.data?.coin;
-  console.log(data);
 
   if(isFetching) return 'Loading...';
   
-  const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
+  //const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
   const stats = [
     { title: 'Price to USD', value: `$ ${cryptoDetails?.price && millify(cryptoDetails?.price)}`, icon: <DollarCircleOutlined /> },
@@ -41,22 +43,20 @@ const CryptoDetails = () => {
   return (
     <Col className="coin-detail-container">
       <Col className="coin-heading-container">
-        <Title level="2" className="coin-name">
-          {cryptoDetails.name} ({cryptoDetails.symbol}) Price
+        <Title level={2} className="coin-name">
+          {data?.data?.coin.name} ({data?.data?.coin.symbol}) Price
         </Title>
-        <p>
-          {cryptoDetails.name} live price in US dollars.
-          View value statistics, market cap and supply.
-        </p>
+        <p>{cryptoDetails.name} live price in US Dollar (USD). 
+        View value statistics, market cap and supply.</p>
       </Col>
-      <Select
-        defaultValue="7d"
-        className="select-timeperiod"
-        placeholder="Select time Period"
-        onChange={(value) => setTimePeriod(value)}
-      >
+      {/*<Select 
+        defaultValue="7d" 
+        className="select-timeperiod" 
+        placeholder="Select Timeperiod" 
+        onChange={(value) => setTimePeriod(value)}>
         {time.map((date) => <Option key={date}>{date}</Option>)}
       </Select>
+  <LineChart coinHistory={coinHistory} currentPrice={millify(cryptoDetails?.price)} coinName={cryptoDetails?.name} />*/}
       <Col className="stats-container">
         <Col className="coin-value-statistics">
           <Col className="coin-value-statistics-heading">
@@ -95,7 +95,7 @@ const CryptoDetails = () => {
               <Text className="stats">{value}</Text>
             </Col>
           ))}
-        </Col>
+        </Col> 
       </Col>
       <Col className="coin-desc-link">
             <Row className="coin-desc">

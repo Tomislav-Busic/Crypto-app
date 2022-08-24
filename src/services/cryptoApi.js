@@ -18,8 +18,25 @@ export const cryptoApi = createApi({
         }),
         getCryptoDetails: builder.query({
             query: (coinId) => createRequest(`/coin/${coinId}`),
+        }),
+        getCryptoHistory: builder.query({
+            query: ({ coinId, timePeriod }) => createRequest(`/coin/${coinId}/history?timeperiod=${timePeriod}`),
         })
     })
 });
 
-export const { useGetCryptosQuery, useGetCryptoDetailsQuery } = cryptoApi;
+export const { 
+    useGetCryptosQuery,
+    useGetCryptoDetailsQuery,
+    useGetCryptoHistoryQuery
+     } = cryptoApi;
+
+
+
+
+     /*
+     const cryptoApiHeaders =  'x-access-token: coinranking78e5b822197eaba850483803cfc81de6c59f7a1dde22e66f';
+
+
+     const baseUrl = 'https://api.coinranking.com/v2';
+     */
