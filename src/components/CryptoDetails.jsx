@@ -16,14 +16,16 @@ const CryptoDetails = () => {
   const [timePeriod, setTimePeriod] = useState('7');
   const {data, isFetching} = useGetCryptoDetailsQuery(coinId);
   const cryptoDetails = data?.data?.coin;
+  console.log(data);
 
+  if(isFetching) return 'Loading...';
   
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
   const stats = [
     { title: 'Price to USD', value: `$ ${cryptoDetails?.price && millify(cryptoDetails?.price)}`, icon: <DollarCircleOutlined /> },
     { title: 'Rank', value: cryptoDetails?.rank, icon: <NumberOutlined /> },
-    { title: '24h Volume', value: `$ ${cryptoDetails?.volume && millify(cryptoDetails?.volume)}`, icon: <ThunderboltOutlined /> },
+    { title: '24h Volume', value: `$ ${cryptoDetails?.[Object.keys(cryptoDetails)[11]] && millify(cryptoDetails?.[Object.keys(cryptoDetails)[11]])}`, icon: <ThunderboltOutlined /> },
     { title: 'Market Cap', value: `$ ${cryptoDetails?.marketCap && millify(cryptoDetails?.marketCap)}`, icon: <DollarCircleOutlined /> },
     { title: 'All-time-high(daily avg.)', value: `$ ${cryptoDetails?.allTimeHigh?.price && millify(cryptoDetails?.allTimeHigh?.price)}`, icon: <TrophyOutlined /> },
   ];
@@ -62,9 +64,18 @@ const CryptoDetails = () => {
               {cryptoDetails.name} Value Statistics
             </Title>
             <p>
-              An overview showing the stats of {cryptoDetails.name}
+                An overview showing the stats of {cryptoDetails.name}
             </p>
           </Col>
+          {stats.map(({icon, title, value}) => (
+            <Col className="coin-stats">
+              <Col className="coin-stats-name">
+                <Text>{icon}</Text>
+                <Text>{title}</Text>
+              </Col>
+              <Text className="stats">{value}</Text>
+            </Col>
+          ))}
         </Col>
       </Col>
     </Col>
